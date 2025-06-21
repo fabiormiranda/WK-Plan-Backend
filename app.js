@@ -14,12 +14,12 @@ const authRoutes = require("./routes/authRoutes");
 const workoutPlanRoutes = require("./routes/workoutPlanRoutes");
 const exerciseRoutes = require("./routes/exerciseRoutes");
 
-// Rotas de autenticação (signup, login)
+/* // Rotas de autenticação (signup, login)
 app.use("/api/auth", authRoutes);
 
 // Rotas principais da app
 app.use("/api/workout-plans", workoutPlanRoutes);
-app.use("/api/exercises", exerciseRoutes);
+app.use("/api/exercises", exerciseRoutes); */
 
 // Rota de teste
 app.get("/api/hello", (req, res) => {
