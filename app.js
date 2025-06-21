@@ -3,7 +3,6 @@ require("./db");
 
 const express = require("express");
 const path = require("path");
-const cors = require("cors");
 const app = express();
 
 // Configura middlewares (logger, cors, json, etc.)
@@ -14,12 +13,10 @@ const authRoutes = require("./routes/authRoutes");
 const workoutPlanRoutes = require("./routes/workoutPlanRoutes");
 const exerciseRoutes = require("./routes/exerciseRoutes");
 
-/* // Rotas de autenticação (signup, login)
+// Usa rotas
 app.use("/api/auth", authRoutes);
-
-// Rotas principais da app
 app.use("/api/workout-plans", workoutPlanRoutes);
-app.use("/api/exercises", exerciseRoutes); */
+app.use("/api/exercises", exerciseRoutes);
 
 // Rota de teste
 app.get("/api/hello", (req, res) => {
@@ -29,13 +26,12 @@ app.get("/api/hello", (req, res) => {
 // Serve frontend em produção
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../wk-plan/dist")));
-
   app.get("/*", (req, res) => {
     res.sendFile(path.join(__dirname, "../wk-plan/dist/index.html"));
   });
 }
 
-// ✅ Middleware global de tratamento de erros (depois de todas as rotas)
+// Middleware global de tratamento de erros (depois de todas as rotas)
 const errorHandler = require("./middleware/errorHandler");
 app.use(errorHandler);
 
