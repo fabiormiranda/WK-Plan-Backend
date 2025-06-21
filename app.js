@@ -8,6 +8,12 @@ const app = express();
 // Configura middlewares (logger, cors, json, etc.)
 require("./config")(app);
 
+// server health check
+app.get("/",(req,res) => {
+
+  res.status(200).json({status:"Healthy"})
+})
+
 // Importa rotas
 const authRoutes = require("./routes/authRoutes");
 const workoutPlanRoutes = require("./routes/workoutPlanRoutes");
