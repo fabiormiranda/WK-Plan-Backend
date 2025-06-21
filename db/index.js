@@ -1,13 +1,13 @@
 // db/index.js
 const mongoose = require("mongoose");
 
-const MONGO_URI = "mongodb://127.0.0.1:27017/wk-plan";
+const MONGO_URI = process.env.MONGO_URL;
 
 mongoose
   .connect(MONGO_URI)
   .then((x) => {
     console.log(`Connected to MongoDB!`);
   })
-  .catch((err) => {
+  .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
   });
