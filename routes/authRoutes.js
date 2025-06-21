@@ -1,16 +1,22 @@
 // routes/authRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const authController = require('../controllers/authController');
+const isAuthenticated = require('../middleware/auth'); // Importa o middleware
 
-router.post('/add-user', async (req, res) => {
-  try {
-    const newUser = new User(req.body);
-    await newUser.save();
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+// SIGN UP (público)
+router.post('/signup', authController.signup);
+
+// LOGIN (público)
+router.post('/login', authController.login);
+
+// Rota protegida (exemplo opcional)
+router.get('/profile', isAuthenticated, (req, res) => {
+  res.json({
+    message: 'Welcome to your profile!',
+    user: req.user, // Os dados decodificados do token
+  });
 });
 
 module.exports = router;
