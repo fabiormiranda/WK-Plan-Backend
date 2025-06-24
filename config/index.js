@@ -1,4 +1,3 @@
-// config/index.js
 const express = require("express");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -9,12 +8,12 @@ module.exports = (app) => {
 
   app.use(
     cors({
-      origin: ["http://localhost:5173"], // muda para o frontend que usares
+      origin: ["http://localhost:5173", "https://wkplan-frontend.onrender.com"], // permite local e deploy
+      credentials: true, // permite cookies e headers de autenticação se precisares
     })
   );
 
   app.use(logger("dev"));
-
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
