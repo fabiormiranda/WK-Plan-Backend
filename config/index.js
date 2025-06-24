@@ -9,7 +9,6 @@ module.exports = (app) => {
   app.use(
     cors({
       origin: ["http://localhost:5173", "https://wkplan-frontend.onrender.com"], // permite local e deploy
-      credentials: true, // permite cookies e headers de autenticação se precisares
     })
   );
 
