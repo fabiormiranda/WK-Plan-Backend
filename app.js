@@ -2,17 +2,15 @@ require("dotenv").config();
 require("./db");
 
 const express = require("express");
-const path = require("path");
 const app = express();
 
 // Configura middlewares (logger, cors, json, etc.)
 require("./config")(app);
 
 // server health check
-app.get("/",(req,res) => {
-
-  res.status(200).json({status:"Healthy"})
-})
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "Healthy" });
+});
 
 // Importa rotas
 const authRoutes = require("./routes/authRoutes");
@@ -29,8 +27,11 @@ app.get("/api/hello", (req, res) => {
   res.json({ message: "Hello from backend!" });
 });
 
-// Middleware global de tratamento de erros (depois de todas as rotas)
-const errorHandler = require("./middleware/errorHandler");
+// Middleware para rotas não encontradas (404) — deve vir depois das rotas
+const { notFound, errorHandler } = require("./middleware/errorHandler");
+app.use(notFound);
+
+// Middleware global de tratamento de erros (depois do 404)
 app.use(errorHandler);
 
 // Start do servidor
