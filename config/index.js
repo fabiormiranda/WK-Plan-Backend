@@ -8,10 +8,15 @@ module.exports = (app) => {
 
   app.use(
     cors({
-      origin: ["http://localhost:5173", "https://wkplan-frontend.onrender.com"], // permite local e deploy
-     credentials: true,
+      origin: ["http://localhost:5173", "https://wkplan-frontend.onrender.com"],
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
     })
   );
+
+  // Remove esta linha:
+  // app.options("*", cors());
 
   app.use(logger("dev"));
   app.use(express.json());
