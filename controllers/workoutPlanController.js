@@ -1,9 +1,9 @@
 const Plan = require("../models/WorkoutPlan");
 
-// GET all plans
+// GET all plans (only the plans for the logged-in user)
 exports.getAllPlans = async (req, res) => {
   try {
-    const plans = await Plan.find().populate("exercises");
+    const plans = await Plan.find({ user: req.user.userId }).populate("exercises");
     res.json(plans);
   } catch (error) {
     res.status(500).json({ error: error.message });

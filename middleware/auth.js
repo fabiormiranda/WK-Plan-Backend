@@ -11,8 +11,7 @@ const isAuthenticated = (req, res, next) => {
     const token = authHeader.split(" ")[1];
     const payload = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Guardar os dados do utilizador decodificados (payload) na request
-    req.payload = payload;
+    req.user = payload;
 
     next();
   } catch (error) {
