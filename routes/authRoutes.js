@@ -5,6 +5,8 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const isAuthenticated = require('../middleware/auth');
 
+router.put('/change-password', isAuthenticated, authController.changePassword);
+
 // Validação simples no próprio router para signup
 router.post('/signup', (req, res, next) => {
   const { name, email, password } = req.body;
