@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    const userId = req.user.userId;  // CORREÇÃO AQUI
+    const userId = req.user.userId; 
 
     const { currentPassword, newPassword } = req.body;
 
