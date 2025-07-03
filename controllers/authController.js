@@ -1,5 +1,3 @@
-// controllers/authController.js
-
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -59,7 +57,8 @@ exports.login = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    const userId = req.payload.userId; // ou req.user.userId conforme teu middleware
+    const userId = req.user.userId;  // CORREÇÃO AQUI
+
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
