@@ -7,25 +7,17 @@ const app = express();
 // Configura middlewares (logger, cors, json, etc.)
 require("./config")(app);
 
-// server health check
-app.get("/", (req, res) => {
-  res.status(200).json({ status: "Healthy" });
-});
-
 // Importa rotas
 const authRoutes = require("./routes/authRoutes");
 const workoutPlanRoutes = require("./routes/workoutPlanRoutes");
 const exerciseRoutes = require("./routes/exerciseRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 // Usa rotas
 app.use("/api/auth", authRoutes);
 app.use("/api/workout-plans", workoutPlanRoutes);
 app.use("/api/exercises", exerciseRoutes);
-
-// Rota de teste
-app.get("/api/hello", (req, res) => {
-  res.json({ message: "Hello from backend!" });
-});
+app.use("/api", uploadRoutes);
 
 // Middleware para rotas não encontradas (404) — deve vir depois das rotas
 const { notFound, errorHandler } = require("./middleware/errorHandler");
