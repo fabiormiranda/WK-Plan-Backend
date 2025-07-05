@@ -6,7 +6,8 @@ const planSchema = new Schema({
   description: String,
   difficulty: { type: String, enum: ['easy', 'medium', 'hard'], required: true },
   exercises: [{ type: Schema.Types.ObjectId, ref: 'Exercise' }],
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  dates: [String],
 }, { timestamps: true });
 
 module.exports = model('Plan', planSchema);

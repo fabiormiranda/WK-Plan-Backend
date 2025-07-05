@@ -26,13 +26,15 @@ exports.getPlanById = async (req, res) => {
 // CREATE new plan
 exports.createPlan = async (req, res) => {
   try {
-    const { title, description, difficulty, exercises } = req.body;
+    // Adicionei "dates" aqui para desestruturar do body
+    const { title, description, difficulty, exercises, dates } = req.body;
 
     const newPlan = new Plan({
       title,
       description,
       difficulty,
       exercises,
+      dates,
       user: req.user.userId, // Usa o userId do token
     });
 
