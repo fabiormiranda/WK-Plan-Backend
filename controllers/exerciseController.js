@@ -26,12 +26,11 @@ exports.getExerciseById = async (req, res) => {
 // CREATE new exercise
 exports.createExercise = async (req, res) => {
   try {
-    const { name, category, description, duration, mediaUrl } = req.body;
+    const { name, category, guide, mediaUrl } = req.body;
     const newExercise = new Exercise({
       name,
       category,
-      description,
-      duration,
+      guide,
       mediaUrl,
     });
     await newExercise.save();
