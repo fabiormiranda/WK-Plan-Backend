@@ -6,21 +6,33 @@ exports.signup = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Verifica se o utilizador já existe
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists' });
     }
 
-    // Encripta a password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Cria o novo utilizador
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
-    res.status(201).json({ message: 'User created successfully' });
+    // Cria token imediatamente após signup (opcional: login automático)
+    const token = jwt.sign(
+      { userId: newUser._id, email: newUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '6h' } // token mais longo para evitar logouts rápidos
+    );
+
+    res.status(201).json({
+      message: 'User created successfully',
+      token,
+      user: {
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -30,26 +42,30 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Procura o utilizador
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Verifica a password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Cria JWT
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '6h' }
     );
 
-    res.json({ token, userId: user._id, name: user.name, email: user.email });
+    res.json({
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -57,7 +73,7 @@ exports.login = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    const userId = req.user.userId; 
+    const userId = req.user.userId;
 
     const { currentPassword, newPassword } = req.body;
 
