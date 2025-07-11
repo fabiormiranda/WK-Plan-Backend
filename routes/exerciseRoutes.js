@@ -1,21 +1,22 @@
 const express = require("express");
 const router = express.Router();
+
 const exerciseController = require("../controllers/exerciseController");
 const isAuthenticated = require("../middleware/auth");
 
-// GET all exercises
+// Route to GET all exercises (public)
 router.get("/", exerciseController.getAllExercises);
 
-// GET one exercise by id
+// Route to GET a specific exercise by ID (public)
 router.get("/:id", exerciseController.getExerciseById);
 
-// POST create new exercise (protected)
+// Route to POST (create) a new exercise (protected)
 router.post("/", isAuthenticated, exerciseController.createExercise);
 
-// PUT update exercise (protected)
+// Route to PUT (update) an existing exercise by ID (protected)
 router.put("/:id", isAuthenticated, exerciseController.updateExercise);
 
-// DELETE delete exercise (protected)
+// Route to DELETE an exercise by ID (protected)
 router.delete("/:id", isAuthenticated, exerciseController.deleteExercise);
 
 module.exports = router;

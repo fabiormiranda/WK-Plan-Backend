@@ -1,6 +1,9 @@
 const Plan = require("../models/WorkoutPlan");
 
-// GET all plans (only the plans for the logged-in user)
+/**
+ * Get all workout plans for the logged-in user.
+ * Protected endpoint.
+ */
 exports.getAllPlans = async (req, res) => {
   try {
     const plans = await Plan.find({ user: req.user.userId }).populate("exercises");
@@ -10,23 +13,30 @@ exports.getAllPlans = async (req, res) => {
   }
 };
 
-// GET plan by id
+/**
+ * Get a single workout plan by ID.
+ * Protected endpoint.
+ */
 exports.getPlanById = async (req, res) => {
   try {
     const plan = await Plan.findById(req.params.id).populate("exercises");
+
     if (!plan) {
       return res.status(404).json({ message: "Plan not found" });
     }
+
     res.json(plan);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// CREATE new plan
+/**
+ * Create a new workout plan for the logged-in user.
+ * Protected endpoint.
+ */
 exports.createPlan = async (req, res) => {
   try {
-    // Adicionei "dates" aqui para desestruturar do body
     const { title, description, difficulty, exercises, dates } = req.body;
 
     const newPlan = new Plan({
@@ -35,7 +45,7 @@ exports.createPlan = async (req, res) => {
       difficulty,
       exercises,
       dates,
-      user: req.user.userId, // Usa o userId do token
+      user: req.user.userId, // Take userId from the JWT token
     });
 
     await newPlan.save();
@@ -45,7 +55,10 @@ exports.createPlan = async (req, res) => {
   }
 };
 
-// UPDATE plan
+/**
+ * Update an existing workout plan by ID.
+ * Protected endpoint.
+ */
 exports.updatePlan = async (req, res) => {
   try {
     const updatedPlan = await Plan.findByIdAndUpdate(
@@ -53,22 +66,29 @@ exports.updatePlan = async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
+
     if (!updatedPlan) {
       return res.status(404).json({ message: "Plan not found" });
     }
+
     res.json(updatedPlan);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// DELETE plan
+/**
+ * Delete a workout plan by ID.
+ * Protected endpoint.
+ */
 exports.deletePlan = async (req, res) => {
   try {
     const deletedPlan = await Plan.findByIdAndDelete(req.params.id);
+
     if (!deletedPlan) {
       return res.status(404).json({ message: "Plan not found" });
     }
+
     res.json({ message: "Plan deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
